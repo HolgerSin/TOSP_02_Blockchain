@@ -18,8 +18,8 @@ public class Block {
     private ArrayList<String> data;
     private long nonce;
     private int id;
-    
     private static long counter = 0;
+
     private static int leadingZeros = 5;
     private static int nonceLimit = 10000000;
 

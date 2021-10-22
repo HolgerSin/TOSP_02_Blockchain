@@ -32,7 +32,7 @@ public class App
         long startTime = new Date().getTime();
         Blockchain myBlockchain = new Blockchain();
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 4; i++) {
             ArrayList<String> data = new ArrayList<String>();
             data.add("Dies ist Block Nr "+i);
             myBlockchain.addBlock(data);

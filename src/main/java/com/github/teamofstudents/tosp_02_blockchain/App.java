@@ -19,7 +19,7 @@ public class App
     // private ArrayList<String> data;
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" + new Date());
+        System.out.println( "Hello World! " + new Date());
 
         // ArrayList<String> data = new ArrayList<String>();
         // data.add("Testdata");

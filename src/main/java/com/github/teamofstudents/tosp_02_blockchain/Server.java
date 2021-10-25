@@ -2,6 +2,10 @@ package com.github.teamofstudents.tosp_02_blockchain;
 import java.net.*;
 import java.io.*;
 
+// Aufruf mit:
+// cd target/classes/
+// java com.github.teamofstudents.tosp_02_blockchain.Server
+// java com.github.teamofstudents.tosp_02_blockchain.Client
 
 public class Server
 {

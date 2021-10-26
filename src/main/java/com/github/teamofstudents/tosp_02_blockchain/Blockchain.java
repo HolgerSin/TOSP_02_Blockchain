@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class Blockchain {
     private ArrayList<Block> chain = new ArrayList<Block>();
 
-    public Blockchain() {
-        ArrayList<String> data = new ArrayList<String>();
-        data.add("Genesis Data");
+    public Blockchain(ArrayList<String> data) {
+        // ArrayList<String> data = new ArrayList<String>();
+        // data.add("Genesis Data");
         chain.add(Block.genesis(data));
     }
     
@@ -18,6 +18,14 @@ public class Blockchain {
     @Override
     public String toString() {
         return "Blockchain [chain=" + chain + "]";
+    }
+
+    public int size() {
+        return chain.size();
+    }
+
+    public Block get(int index) {
+        return chain.get(index);
     }
 
     

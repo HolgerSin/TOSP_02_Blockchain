@@ -8,6 +8,11 @@
     </encoder>
   </appender>
 
+<!-- 
+  <logger name="com.github.teamofstudents.tosp_02_blockchain.Block" level="DEBUG" />
+  <logger name="com.github.teamofstudents.tosp_02_blockchain.App" level="DEBUG" />
+  <logger name="com.github.teamofstudents.tosp_02_blockchain.MiningThread" level="DEBUG" /> -->
+
   <root level="trace">
     <appender-ref ref="STDOUT" />
   </root>

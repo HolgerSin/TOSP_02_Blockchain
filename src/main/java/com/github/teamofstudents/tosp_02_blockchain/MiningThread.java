@@ -11,7 +11,9 @@ public class MiningThread extends Thread {
     private Thread thread;
     private String threadName;
 
-    private int maxChainLength = 4;
+    private int maxChainLength = 40;
+    private int leadingZeros = 5;
+    private long nonceLimit = 100000000;
 
     public MiningThread(String threadName) {
         this.threadName = threadName;
@@ -35,7 +37,7 @@ public class MiningThread extends Thread {
         
         ArrayList<String> data = new ArrayList<String>();
         data.add("Dies ist Block Nr 0 berechnet durch: " + thread);
-        Blockchain myBlockchain = new Blockchain(data);
+        Blockchain myBlockchain = new Blockchain(data, leadingZeros, nonceLimit);
 
         for (int i = 1; i <= maxChainLength; i++) {
             data = new ArrayList<String>();
@@ -46,7 +48,7 @@ public class MiningThread extends Thread {
         long endTime = new Date().getTime();
         long duration = endTime - startTime == 0 ? 1 : endTime - startTime;
         double durationInSec = (double) duration / 1000;
-        logger.info(myBlockchain.toString());
+        logger.debug(myBlockchain.toString());
         logger.info("Running time: {} Sekunden für {} Blocks = {} Sek./Block", durationInSec, myBlockchain.size(), durationInSec / myBlockchain.size());
         
         logger.debug("Thread " + threadName + " exiting.");

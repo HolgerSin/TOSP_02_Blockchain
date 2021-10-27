@@ -20,8 +20,8 @@ public class Block {
     private int id;
     // private static long counter = 0;
 
-    private static int leadingZeros = 5;
-    private static long nonceLimit = 100000000;
+    // private static int leadingZeros = 6;
+    // private static long nonceLimit = 100000000;
 
     public Block(int id, long timestamp, String lastHash, String hash, ArrayList<String> data, long nonce) {
         this.id = id;
@@ -48,38 +48,43 @@ public class Block {
 
 
 
-    public static Block genesis(ArrayList<String> data){
+    public static Block genesis(ArrayList<String> data, String pattern, long nonceLimit){
         int newID = 0;
         long timestamp = new Date().getTime();
         String lastHash = "Genesis";
-        String[] returnValues = leadingZeroHash(newID, timestamp, lastHash, data);
+        String[] returnValues = leadingZeroHash(newID, timestamp, lastHash, data, pattern, nonceLimit);
         String hash = returnValues[0];
-        long counter = Long.valueOf(returnValues[1]);
-        return new Block(newID, timestamp, lastHash, hash, data, counter);
+        long nonce = Long.valueOf(returnValues[1]);
+        return new Block(newID, timestamp, lastHash, hash, data, nonce);
     }
 
-    public static Block mineBlock(Block lastBlock, ArrayList<String> data){
+    public static Block mineBlock(Block lastBlock, ArrayList<String> data, String pattern, long nonceLimit){
         int newID = lastBlock.id + 1;
         long timestamp = new Date().getTime();
         String lastHash = lastBlock.hash;
-        String[] returnValues = leadingZeroHash(newID, timestamp, lastHash, data);
+        String[] returnValues = leadingZeroHash(newID, timestamp, lastHash, data, pattern, nonceLimit);
         String hash = returnValues[0];
-        long counter = Long.valueOf(returnValues[1]);
-        return new Block(newID, timestamp, lastHash, hash, data, counter);
+        long nonce = Long.valueOf(returnValues[1]);
+        return new Block(newID, timestamp, lastHash, hash, data, nonce);
     }
 
-    private static String[] leadingZeroHash(int newID, long timestamp, String lastHash, ArrayList<String> data) {
+    private static String[] leadingZeroHash(int newID, long timestamp, String lastHash, ArrayList<String> data, String pattern, long nonceLimit) {
         long startTime = new Date().getTime();
-        
-        String pattern = "^0{"+leadingZeros+"}\\w*";
-        long counter = 0;
-        String hash = hash(newID + "" + timestamp + lastHash + data + counter);
+        boolean keepRunning =true;
+        // String pattern = "^0{"+leadingZeros+"}\\w*";
+        long nonce = 0;
+        String hash = hash(newID + "" + timestamp + lastHash + data + nonce);
 
-        while (!hash.matches(pattern) && counter < nonceLimit) {
-            counter++;
-            hash = hash(newID + "" + timestamp + lastHash + data + counter);
-            if (counter % 1000000 == 0) {
-                logger.trace("Still running, Block {}, counter: {}, timestamp: {}", newID,  counter, timestamp);
+        while (!hash.matches(pattern) && nonce < nonceLimit && keepRunning) {
+            nonce++;
+            hash = hash(newID + "" + timestamp + lastHash + data + nonce);
+            if (nonce % 1000000 == 0) {
+                if (App.isBlockFound()) {
+                    keepRunning = false;
+                    logger.trace("Other Thread has found block, aborting, Block {}, counter: {}, timestamp: {}", newID,  nonce, timestamp);
+                } else{
+                    logger.trace("Still running, Block {}, counter: {}, timestamp: {}", newID,  nonce, timestamp);
+                }
             }
         }
         if (!hash.matches(pattern)) {
@@ -88,13 +93,27 @@ public class Block {
         long endTime = new Date().getTime();
         long duration = endTime - startTime == 0 ? 1 : endTime - startTime;
      
-        logger.debug("Block {}, counter: {}, Laufzeit {} ms mit {} Berechnungen pro Sekunde, \n\t Hash {}, timestamp: {}", newID, counter, duration, counter*1000/(duration), hash, timestamp);
-        
-        return new String[] {hash, String.valueOf(counter)};
+        logger.debug("Block {}, counter: {}, Laufzeit {} ms mit {} Berechnungen pro Sekunde, \n\t Hash {}, timestamp: {}", newID, nonce, duration, nonce*1000/(duration), hash, timestamp);
+        App.setBlockFound(true);
+        return new String[] {hash, String.valueOf(nonce)};
     }
 
     private static String hash(String message) {
         return DigestUtils.sha256Hex(message);
     }
+
+
+
+    public String getLastHash() {
+        return lastHash;
+    }
+
+
+
+    public String getHash() {
+        return hash;
+    }
+
+    
     
 }

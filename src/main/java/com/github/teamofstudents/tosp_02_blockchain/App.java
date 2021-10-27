@@ -3,56 +3,57 @@ package com.github.teamofstudents.tosp_02_blockchain;
 // import java.util.ArrayList;
 import java.util.Date;
 
-
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Logger;
 // import ch.qos.logback.classic.Level;
-    
 
 /**
  * Hello world!
  *
  */
-public class App 
-{
+public class App extends Thread {
     private static Logger logger = (Logger) LoggerFactory.getLogger(App.class);
+    private static Blockchain masterBlockchain;
+    private static boolean blockFound = false;
+
+
     // private ArrayList<String> data;
-    public static void main( String[] args )
-    {
-        // logger.setLevel(Level.INFO);
-        // logger.setLevel(Level.DEBUG);
-        // logger.setLevel(Level.TRACE);
+    public static void main(String[] args) {
 
+        logger.info("Hello World! " + new Date());
 
-        logger.info( "Hello World! " + new Date());
+        // MiningThread miningThread1 = new MiningThread("Thread-1");
+        // miningThread1.start();
+        // MiningThread miningThread2 = new MiningThread("Thread-2");
+        // miningThread2.start();
 
-        // ArrayList<String> data = new ArrayList<String>();
-        // data.add("Testdata");
-        // Block myBlock = Block.genesis(data);
-        // System.out.println(myBlock);
-        // data.add("mehr Daten");
-        // Block newBlock = Block.mineBlock(myBlock, data);
-        // System.out.println(newBlock);
-
-        MiningThread miningThread1 = new MiningThread( "Thread-1");
+        CoordinatedMiningThread miningThread1 = new CoordinatedMiningThread("CoordMiningThread-1", masterBlockchain);
+        // logger.debug(miningThread1 + " has state " + miningThread1.getState().toString());
+        CoordinatedMiningThread miningThread2 = new CoordinatedMiningThread("CoordMiningThread-2", masterBlockchain);
         miningThread1.start();
-        MiningThread miningThread2 = new MiningThread( "Thread-2");
         miningThread2.start();
+        // logger.debug(miningThread1 + " has state " + miningThread1.getState().toString());
+        
+        try {
+            // sleep(500);
+            miningThread1.join();
+            logger.debug("Thread 1 finished !?");
+            logger.debug(miningThread1 + " has state " + miningThread1.getState().toString());
+            // sleep(2000);
+            
+        } catch (Exception e) {
+            logger.warn("Interrupted");
+        }
+    
 
-        // long startTime = new Date().getTime();
-        // Blockchain myBlockchain = new Blockchain();
-
-        // for (int i = 1; i <= 4; i++) {
-        //     ArrayList<String> data = new ArrayList<String>();
-        //     data.add("Dies ist Block Nr "+i);
-        //     myBlockchain.addBlock(data);
-        // }
-        // logger.trace(myBlockchain.toString());
-        // long endTime = new Date().getTime();
-        // long duration = endTime - startTime == 0 ? 1 : endTime - startTime;
-        
-        
-        // logger.info("Running time: {} Sekunden", (double) duration/1000);
-        
     }
+
+    public static boolean isBlockFound() {
+        return blockFound;
+    }
+
+    public static void setBlockFound(boolean blockFound) {
+        App.blockFound = blockFound;
+    }
+
 }

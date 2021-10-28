@@ -22,19 +22,38 @@ public class Blockchain {
         // this.leadingZeros = leadingZeros;
         this.nonceLimit = nonceLimit;
         this.pattern = "^0{"+leadingZeros+"}\\w*";
-        chain.add(Block.genesis(data, pattern, nonceLimit));
+        // chain.add(Block.genesis(data, pattern, nonceLimit));
         // CONTINUE HERE
+        // Block newBlock = Block.genesis(data, pattern, nonceLimit);
+        // addBlockToChain(newBlock);
+        createBlock(data);
     }
     
-    public void addBlock(ArrayList<String> data) {
-        Block newBlock = Block.mineBlock(chain.get(chain.size()-1), data, pattern, nonceLimit);
-        if (newBlock.getHash().matches(pattern)) {
+    public boolean createBlock(ArrayList<String> data) {
+        int chainSize = chain.size();
+        Block lastBlock = chain.size() == 0 ? null : chain.get(chain.size()-1);
+        Block newBlock = Block.mineBlock(lastBlock, data, pattern, nonceLimit);
+        // addBlockToChain(newBlock);
+        // SYNCRONIZED?
+        if (newBlock.getHash().matches(pattern) && chain.size() == chainSize) {
             chain.add(newBlock);
+            logger.debug("Block added to Chain: {}", newBlock);
+            return true;
         } else{
-            logger.warn("From Blockchain Class: No valid Hash found");
+            logger.warn("From Blockchain Class: No valid Hash found OR other Thread already found Hash");
+            return false;
         }
-        
     }
+
+
+    // private void addBlockToChain(Block block) {
+    //     if (block.getHash().matches(pattern)) {
+    //         chain.add(block);
+    //     } else{
+    //         logger.warn("From Blockchain Class: No valid Hash found");
+    //     }
+    // }
+
 
     @Override
     public String toString() {
@@ -49,6 +68,10 @@ public class Blockchain {
         return chain.get(index);
     }
 
-    
+    public ArrayList<Block> getChain() {
+        return chain;
+    }
+
+        
 
 }

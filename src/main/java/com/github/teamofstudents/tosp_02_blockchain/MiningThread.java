@@ -42,7 +42,7 @@ public class MiningThread extends Thread {
         for (int i = 1; i <= maxChainLength; i++) {
             data = new ArrayList<String>();
             data.add("Dies ist Block Nr " + i + " berechnet durch: " + thread);
-            myBlockchain.addBlock(data);
+            myBlockchain.createBlock(data);
         }
 
         long endTime = new Date().getTime();

@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Assign to One Project
     steps:
-    - name: Assign NEW issues to project https://github.com/ComcaveTeamwork/CTP_01_TableReader/projects/2
+    - name: Assign NEW issues to project https://github.com/TeamOfStudents/TOSP_02_Blockchain/projects/1
       uses: srggrs/assign-one-project-github-action@1.2.1
       if: github.event_name == 'issues' 
       with:
@@ -21,7 +21,7 @@ jobs:
         column_name: 'ToDo'
 
 
-    - name: Assign NEW pull requests to project https://github.com/ComcaveTeamwork/CTP_01_TableReader/projects/3
+    - name: Assign NEW pull requests to project https://github.com/TeamOfStudents/TOSP_02_Blockchain/projects/2
       uses: srggrs/assign-one-project-github-action@1.2.1
       if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
       with:
@@ -30,7 +30,7 @@ jobs:
 
       
 
-    - name: Assign NEW DRAFT pull requests to project https://github.com/ComcaveTeamwork/CTP_01_TableReader/projects/3
+    - name: Assign NEW DRAFT pull requests to project https://github.com/TeamOfStudents/TOSP_02_Blockchain/projects/2
       uses: srggrs/assign-one-project-github-action@1.2.1
       if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
       with:

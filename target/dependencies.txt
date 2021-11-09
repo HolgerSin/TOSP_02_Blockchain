@@ -1,0 +1,8 @@
+digraph "com.github.teamofstudents.tosp_02_blockchain:tosp_02_blockchain:jar:0.1-Init" { 
+	"com.github.teamofstudents.tosp_02_blockchain:tosp_02_blockchain:jar:0.1-Init" -> "junit:junit:jar:4.11:test" ; 
+	"com.github.teamofstudents.tosp_02_blockchain:tosp_02_blockchain:jar:0.1-Init" -> "commons-codec:commons-codec:jar:1.13:compile" ; 
+	"com.github.teamofstudents.tosp_02_blockchain:tosp_02_blockchain:jar:0.1-Init" -> "ch.qos.logback:logback-classic:jar:1.2.6:compile" ; 
+	"junit:junit:jar:4.11:test" -> "org.hamcrest:hamcrest-core:jar:1.3:test" ; 
+	"ch.qos.logback:logback-classic:jar:1.2.6:compile" -> "ch.qos.logback:logback-core:jar:1.2.6:compile" ; 
+	"ch.qos.logback:logback-classic:jar:1.2.6:compile" -> "org.slf4j:slf4j-api:jar:1.7.32:compile" ; 
+ } 
